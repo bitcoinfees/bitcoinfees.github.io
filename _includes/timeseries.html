@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="embed-responsive embed-responsive-4by3">
+    <iframe class="embed-responsive-item" src="https://plot.ly/~bitcoinfees/{{ page.fig_id }}.embed"></iframe>
+  </div>
+  <nav>
+    <ul class="pagination">
+      <li {% if page.fig_id == 691 %} class="active" {% endif %}><a href="index.html">1m</a></li>
+      <li {% if page.fig_id == 697 %} class="active" {% endif %}><a href="30m.html">30m</a></li>
+      <li {% if page.fig_id == 695 %} class="active" {% endif %}><a href="3h.html">3h</a></li>
+      <li {% if page.fig_id == 699 %} class="active" {% endif %}><a href="1d.html">1d</a></li>
+    </ul>
+  </nav>
+</div>
