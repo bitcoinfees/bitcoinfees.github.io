@@ -11,6 +11,12 @@
 
     {% include footer.html %}
 
+    {% include scripts.html %}
+
+    {% if page.title == "Home" %}
+      {% include res_select.html %}
+    {% endif %}
+
   </body>
 
 </html>

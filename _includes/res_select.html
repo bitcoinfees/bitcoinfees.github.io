@@ -1,0 +1,21 @@
+<!-- Implements the resolution selection -->
+ <script type="text/javascript">
+   $(document).ready(function () {
+     putGraph($("#res-select").first().find("a").attr("id"))
+   })
+   function putGraph(fig_id) {
+     var iframehtml = "<div class=\"embed-responsive embed-responsive-4by3\"><iframe class=\"embed-responsive-item\" src=\"https://plot.ly/~bitcoinfees/" + fig_id + ".embed\"></iframe></div>"
+     var imghtml = "<a href=\"https://plot.ly/~bitcoinfees/" + fig_id + "/\" target=\"_blank\" title=\"Required fee rate for given average confirmation time\" style=\"display: block; text-align: center;\"><img src=\"https://plot.ly/~bitcoinfees/" + fig_id + ".png\" alt=\"Required fee rate for given average confirmation time\" style=\"max-width: 100%;\"  onerror=\"this.onerror=null;this.src='https://plot.ly/404.png';\" /></a><sc" + "ript data-plotly=\"bitcoinfees:" + fig_id + "\" src=\"https://plot.ly/embed.js\" async></scr" + "ipt>"
+     var width = $(window).width();
+     if ($(window).width() < 768)
+       $("#graph").html(imghtml);
+     else
+       $("#graph").html(iframehtml);
+     $("#res-select").children().each(function() {
+       if ($(this).find("a").attr("id") == fig_id)
+         $(this).attr("class", "active")
+       else
+         $(this).removeAttr("class")
+     })
+   }
+ </script>
