@@ -1,7 +1,5 @@
 <div class="container">
-  <div class="embed-responsive embed-responsive-4by3">
-    <iframe class="embed-responsive-item" src="https://plot.ly/~bitcoinfees/{{ page.fig_id }}.embed"></iframe>
-  </div>
+  <div id="graph"></div>
   <nav>
     <ul class="pagination">
       <li {% if page.res == "1m" %} class="active" {% endif %}><a href="index.html">1m</a></li>
@@ -10,4 +8,16 @@
       <li {% if page.res == "1d" %} class="active" {% endif %}><a href="1d.html">1d</a></li>
     </ul>
   </nav>
+
+  <script>
+    var iframehtml = "<div class=\"embed-responsive embed-responsive-4by3\"><iframe class=\"embed-responsive-item\" src=\"https://plot.ly/~bitcoinfees/{{ page.fig_id }}.embed\"></iframe></div>"
+    var imghtml = "<a href=\"https://plot.ly/~bitcoinfees/{{ page.fig_id }}/\" target=\"_blank\" title=\"Required fee rate for given average confirmation time\" style=\"display: block; text-align: center;\"><img src=\"https://plot.ly/~bitcoinfees/{{ page.fig_id }}.png\" alt=\"Required fee rate for given average confirmation time\" style=\"max-width: 100%;\"  onerror=\"this.onerror=null;this.src='https://plot.ly/404.png';\" /></a><sc" + "ript data-plotly=\"bitcoinfees:{{ page.fig_id }}\" src=\"https://plot.ly/embed.js\" async></scr" + "ipt>"
+    $(document).ready(function () {
+      var width = $(window).width();
+      if ($(window).width() < 768)
+        $("#graph").html(imghtml);
+      else
+        $("#graph").html(iframehtml);
+    })
+  </script>
 </div>
