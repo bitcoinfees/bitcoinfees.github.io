@@ -1,0 +1,5 @@
+footer li {
+    display: inline;
+    list-style: none;
+    padding-right: 20px;
+}
