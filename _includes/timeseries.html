@@ -9,7 +9,7 @@
     </ul>
   </nav>
 
-  <script>
+  <script type="text/javascript">
     var iframehtml = "<div class=\"embed-responsive embed-responsive-4by3\"><iframe class=\"embed-responsive-item\" src=\"https://plot.ly/~bitcoinfees/{{ page.fig_id }}.embed\"></iframe></div>"
     var imghtml = "<a href=\"https://plot.ly/~bitcoinfees/{{ page.fig_id }}/\" target=\"_blank\" title=\"Required fee rate for given average confirmation time\" style=\"display: block; text-align: center;\"><img src=\"https://plot.ly/~bitcoinfees/{{ page.fig_id }}.png\" alt=\"Required fee rate for given average confirmation time\" style=\"max-width: 100%;\"  onerror=\"this.onerror=null;this.src='https://plot.ly/404.png';\" /></a><sc" + "ript data-plotly=\"bitcoinfees:{{ page.fig_id }}\" src=\"https://plot.ly/embed.js\" async></scr" + "ipt>"
     $(document).ready(function () {
