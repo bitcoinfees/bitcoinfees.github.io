@@ -4,10 +4,10 @@
   </div>
   <nav>
     <ul class="pagination">
-      <li {% if page.fig_id == 691 %} class="active" {% endif %}><a href="index.html">1m</a></li>
-      <li {% if page.fig_id == 697 %} class="active" {% endif %}><a href="30m.html">30m</a></li>
-      <li {% if page.fig_id == 695 %} class="active" {% endif %}><a href="3h.html">3h</a></li>
-      <li {% if page.fig_id == 699 %} class="active" {% endif %}><a href="1d.html">1d</a></li>
+      <li {% if page.res == "1m" %} class="active" {% endif %}><a href="index.html">1m</a></li>
+      <li {% if page.res == "30m" %} class="active" {% endif %}><a href="30m.html">30m</a></li>
+      <li {% if page.res == "3h" %} class="active" {% endif %}><a href="3h.html">3h</a></li>
+      <li {% if page.res == "1d" %} class="active" {% endif %}><a href="1d.html">1d</a></li>
     </ul>
   </nav>
 </div>
