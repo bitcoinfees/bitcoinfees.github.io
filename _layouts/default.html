@@ -7,14 +7,16 @@
 
     {% include nav.html %}
 
+    <div class="container">
     {{ content }}
+    </div>
 
     {% include footer.html %}
 
     {% include scripts.html %}
 
     {% if page.title == "Home" %}
-      {% include res_select.html %}
+    {% include putgraph_script.html %}
     {% endif %}
 
   </body>
