@@ -2,6 +2,7 @@
 title: Docs
 layout: page
 permalink: /docs/
+navactive: Docs
 ---
 
 Coming Soon

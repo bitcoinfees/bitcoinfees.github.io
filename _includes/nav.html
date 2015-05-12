@@ -10,20 +10,28 @@
     </div>
     <div class="collapse navbar-collapse" id="nav-collapse">
       <ul class="nav navbar-nav">
-        <li {% if page.title == "Home" %} class="active" {% endif %}>
+        <li {% if page.navactive == "Home" %} class="active" {% endif %}>
           <a href="/">Home</a>
         </li>
-        <li {% if page.title == "About" %} class="active" {% endif %}>
+        <li {% if page.navactive == "About" %} class="active" {% endif %}>
           <a href="/about">About</a>
         </li>
-        <li {% if page.title == "Docs" %} class="active" {% endif %}>
+        <li {% if page.navactive == "Docs" %} class="active" {% endif %}>
           <a href="/docs">Docs</a>
         </li>
-        <li {% if page.title == "FAQ" %} class="active" {% endif %}>
+        <li {% if page.navactive == "FAQ" %} class="active" {% endif %}>
           <a href="/faq">FAQ</a>
         </li>
-        <li {% if page.title == "Misc Stats" %} class="active" {% endif %}>
-          <a href="/misc">Misc Stats</a>
+        <li class="dropdown {% if page.navactive == 'Misc Stats' %}active{% endif %}">
+          <a href="/misc"
+             data-toggle="dropdown"
+             class="dropdown-toggle">Misc Stats<b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/misc/profile">Wait profile</a></li>
+            <li><a href="/misc/pools">Mining pools</a></li>
+            <li><a href="/misc/pvals">Wait p-values</a></li>
+          </ul>
         </li>
       </ul>
     </div>

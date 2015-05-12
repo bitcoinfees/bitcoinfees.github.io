@@ -1,13 +1,31 @@
 ---
-title: Home
+title: Bitcoin Fee Estimation
 layout: default
+navactive: Home
 ---
 <div id="graph"></div>
 <nav>
   <ul id="res-select" class="pagination">
-    <li><a id="691" onclick="putGraph(this.id)" href="javascript:void(0)">1m</a></li>
-    <li><a id="697" onclick="putGraph(this.id)" href="javascript:void(0)">30m</a></li>
-    <li><a id="695" onclick="putGraph(this.id)" href="javascript:void(0)">3h</a></li>
-    <li><a id="699" onclick="putGraph(this.id)" href="javascript:void(0)">1d</a></li>
+    <li><a id="691" onclick="putRRD(this.id)" href="javascript:void(0)">1m</a></li>
+    <li><a id="697" onclick="putRRD(this.id)" href="javascript:void(0)">30m</a></li>
+    <li><a id="695" onclick="putRRD(this.id)" href="javascript:void(0)">3h</a></li>
+    <li><a id="699" onclick="putRRD(this.id)" href="javascript:void(0)">1d</a></li>
   </ul>
 </nav>
+
+<!-- Implements the resolution selection -->
+<script type="text/javascript">
+  $(document).ready(function () {
+    putRRD($("#res-select").first().find("a").attr("id"))
+  })
+
+  function putRRD(fig_id) {
+    putGraph(fig_id, "#graph")
+    $("#res-select").children().each(function() {
+      if ($(this).find("a").attr("id") == fig_id)
+        $(this).attr("class", "active")
+      else
+        $(this).removeAttr("class")
+    })
+  }
+</script>

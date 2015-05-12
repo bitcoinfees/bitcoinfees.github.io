@@ -2,6 +2,7 @@
 title: About
 layout: page
 permalink: /about/
+navactive: About
 ---
 
 Coming Soon

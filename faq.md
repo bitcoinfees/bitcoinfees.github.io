@@ -2,6 +2,7 @@
 title: FAQ
 layout: page
 permalink: /faq/
+navactive: FAQ
 ---
 
 Coming Soon
