@@ -6,26 +6,41 @@ navactive: Home
 <div id="graph"></div>
 <nav>
   <ul id="res-select" class="pagination">
-    <li><a id="691" onclick="putRRD(this.id)" href="javascript:void(0)">1m</a></li>
-    <li><a id="697" onclick="putRRD(this.id)" href="javascript:void(0)">30m</a></li>
-    <li><a id="695" onclick="putRRD(this.id)" href="javascript:void(0)">3h</a></li>
-    <li><a id="699" onclick="putRRD(this.id)" href="javascript:void(0)">1d</a></li>
+    <li id="1m"><a href="/#1m">1m</a></li>
+    <li id="30m"><a href="/#30m">30m</a></li>
+    <li id="3h"><a href="/#3h">3h</a></li>
+    <li id="1d"><a href="/#1d">1d</a></li>
   </ul>
 </nav>
 
 <!-- Implements the resolution selection -->
 <script type="text/javascript">
-  $(document).ready(function () {
-    putRRD($("#res-select").first().find("a").attr("id"))
-  })
 
-  function putRRD(fig_id) {
-    putGraph(fig_id, "#graph")
-    $("#res-select").children().each(function() {
-      if ($(this).find("a").attr("id") == fig_id)
-        $(this).attr("class", "active")
-      else
-        $(this).removeAttr("class")
-    })
+  var FIGMAP = {
+    "#1m": "691",
+    "#30m": "697",
+    "#3h": "695",
+    "#1d": "699"
+  };
+
+  $(document).ready(function () {
+    putRRD(window.location.hash);
+  });
+
+  $(window).on('hashchange', function() {
+    putRRD(window.location.hash);
+  });
+
+  function putRRD(res) {
+    if (!(res in FIGMAP))
+      res = "#1m";
+    putGraph(FIGMAP[res], "#graph");
+    clearResButtons();
+    $(res).attr("class", "active");
+  }
+
+  function clearResButtons() {
+    for (res in FIGMAP)
+      $(res).removeAttr("class")
   }
 </script>

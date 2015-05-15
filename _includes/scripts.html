@@ -4,7 +4,6 @@
   function putGraph(fig_id, el_id) {
     var iframehtml = "<div class=\"embed-responsive embed-responsive-4by3\"><iframe class=\"embed-responsive-item\" src=\"https://plot.ly/~bitcoinfees/" + fig_id + ".embed\"></iframe></div>"
     var imghtml = "<a href=\"https://plot.ly/~bitcoinfees/" + fig_id + "/\" target=\"_blank\" style=\"display: block; text-align: center;\"><img src=\"https://plot.ly/~bitcoinfees/" + fig_id + ".png\" style=\"max-width: 100%;\" onerror=\"this.onerror=null;this.src='https://plot.ly/404.png';\" /></a>"
-    var width = $(window).width();
     if ($(window).width() < 768)
       $(el_id).html(imghtml);
     else
