@@ -15,7 +15,7 @@ of fee rate, conditioned on:
 * The current mempool state.
 * Estimates of:
     1. Current transaction arrival statistics.
-    2. Mining pool hashrates and transaction selection policies.
+    2. Miner transaction selection policies.
 
 The result is a real-time prediction of transaction wait times, updated every minute.
 
@@ -47,14 +47,15 @@ are shown [here](/misc/pvals).
 
 ### Model overview
 
-#### [Mining pools](/misc/pools)
+#### [Mining](/misc/mining)
 
 * Block discovery occurs as a Poisson process.
 * Miners select transactions greedily by highest feerate, subject to a minimum feerate
-and a maximum block size.
+and a maximum block size
 * "Orphan" transactions (transactions with mempool dependencies) are considered only after
 its parent has been selected (i.e. no child-pays-for-parent).
 * No modeling of minimum and priority block size, for simplicity.
+* The min fee rate and max block size parameters for each block are modeled as independent random variables.
 
 #### [Transaction arrivals](/misc/profile)
 
