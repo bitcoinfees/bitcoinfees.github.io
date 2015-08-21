@@ -11,12 +11,12 @@ This site diplays real-time estimates of required Bitcoin transaction fees (i.e.
 given in satoshis per kB of transaction size ("fee rate"), and with respect to a given expected wait time
 (time spent waiting to be included in a block).
 
-The estimated are updated every minute.
+The estimates are updated every minute.
 
 ## How are the estimates obtained?
 
 The estimates are obtained by Monte Carlo simulation of a queueing model of the Bitcoin network.
-Both miner selection policy and transaction arrival statistics are modeled and estimated.
+Both miner transaction selection policy and transaction arrival statistics are modeled and estimated.
 
 From the simulations we can obtain the transient distribution of the wait time of a transaction with
 a given fee rate, conditioned on the current mempool state, and hence derive the fee estimates.
