@@ -7,34 +7,23 @@ navactive: About
 
 ## What is this?
 
-This site shows the results of [a program](https://github.com/bitcoinfees/bitcoin-feemodel)
-which runs simulations on a queueing model of the Bitcoin network, in order to determine
-the transient distribution of transaction wait times (i.e. time spent in the mempool) as a function
-of fee rate, conditioned on:
+This site diplays real-time estimates of required Bitcoin transaction fees (i.e. miner's fee). The estimates are
+given in satoshis per kB of transaction size ("fee rate"), and with respect to a given expected wait time
+(time spent waiting to be included in a block).
 
-* The current mempool state.
-* Estimates of:
-    1. Current transaction arrival statistics.
-    2. Miner transaction selection policies.
+The estimated are updated every minute.
 
-The result is a real-time prediction of transaction wait times, updated every minute.
+## How are the estimates obtained?
 
+The estimates are obtained by Monte Carlo simulation of a queueing model of the Bitcoin network.
+Both miner selection policy and transaction arrival statistics are modeled and estimated.
 
-### How's this different from Bitcoin Core's smart fees?
+From the simulations we can obtain the transient distribution of the wait time of a transaction with
+a given fee rate, conditioned on the current mempool state, and hence derive the fee estimates.
 
-Bitcoin Core's estimates are based on aggregating past wait time measurements, and
-at the moment do not allow conditioning on the current mempool state (a large mempool backlog,
-for example, would result in longer wait times), or take into account variations in the
-transaction arrival rate.
+The simulation software is open source and can be found [here](https://github.com/bitcoinfees/bitcoin-feemodel).
 
-These are possible with the model-based approach employed here; the main tradeoff, however,
-is the dependence on the model assumptions, the most tricky of which are the assumptions
-about the way miners select block transactions.
-
-Both approaches, however, are useful and serve to validate each other.
-
-
-### How accurate are the results?
+## How accurate are the results?
 
 For each new transaction, the program predicts a wait time distribution based on its
 feerate. When the transaction has entered a block, the p-value corresponding to the
@@ -45,9 +34,9 @@ are shown [here](/misc/pvals).
 
 ---
 
-### Model overview
+## Model overview
 
-#### [Mining](/misc/mining)
+### [Mining](/misc/mining)
 
 * Block discovery occurs as a Poisson process.
 * Miners select transactions greedily by highest feerate, subject to a minimum feerate
@@ -57,11 +46,20 @@ its parent has been selected (i.e. no child-pays-for-parent).
 * No modeling of minimum and priority block size, for simplicity.
 * The min fee rate and max block size parameters for each block are modeled as independent random variables.
 
-#### [Transaction arrivals](/misc/profile)
+### [Transaction arrivals](/misc/profile)
 
 * Arrivals occur as a Poisson process.
 * Each transaction is represented by `(feerate, size)`, independently drawn from a certain joint distribution.
 
-### Parameter estimation overview
+## Parameter estimation overview
 
-Coming soon...
+### Mining
+
+* Overall hashrate is estimated over an interval of 2 weeks.
+* Max block size policy distribution is taken from the actual block size empirical distribution, when mempool size is relatively large.
+* Min fee rate policy distribution is taken from the "stranding fee rate" empirical distribution, when mempool size is relatively small.
+* The "stranding fee rate" is an estimate of the minimum fee rate needed to get into a particular block.
+
+### Transaction arrivals
+
+* Transaction statistics estimated using a exponential moving average with a halflife of 1 hour.
