@@ -7,7 +7,7 @@ navactive: About
 
 ## What is this?
 
-This site diplays real-time estimates of required Bitcoin transaction fees (i.e. miner's fee). The estimates are
+This site displays real-time estimates of required Bitcoin transaction fees (i.e. miner's fee). The estimates are
 given in satoshis per kB of transaction size ("fee rate"), and with respect to a given expected wait time
 (time spent waiting to be included in a block).
 
