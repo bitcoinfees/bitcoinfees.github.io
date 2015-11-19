@@ -3,7 +3,8 @@ title: Bitcoin Fee Estimation
 layout: default
 navactive: Home
 ---
-<div id="graph"></div>
+<!-- <div id="graph" class="embed-responsive embed-responsive-4by3"></div> -->
+<div id="graph" style="width:1024px;height:768px"></div>
 <nav>
   <ul id="res-select" class="pagination">
     <li id="1m"><a href="/#1m">1m</a></li>
@@ -12,36 +13,152 @@ navactive: Home
     <li id="1d"><a href="/#1d">1d</a></li>
   </ul>
 </nav>
-<p>18 Nov '15 - Sorry for the outdated data, there's a problem with the graphing service provider at the moment.</p>
 
-<!-- Implements the resolution selection -->
 <script type="text/javascript">
-
-  var FIGMAP = {
-    "#1m": "691",
-    "#30m": "697",
-    "#3h": "695",
-    "#1d": "699"
+  var RESMAP = {
+    "#1m": 1,
+    "#30m": 2,
+    "#3h": 3,
+    "#1d": 4
   };
 
-  $(document).ready(function () {
-    putRRD(window.location.hash);
-  });
-
-  $(window).on('hashchange', function() {
-    putRRD(window.location.hash);
-  });
-
-  function putRRD(res) {
-    if (!(res in FIGMAP))
-      res = "#1m";
-    putGraph(FIGMAP[res], "#graph");
-    clearResButtons();
-    $(res).attr("class", "active");
-  }
-
   function clearResButtons() {
-    for (res in FIGMAP)
+    for (res in RESMAP)
       $(res).removeAttr("class")
   }
+
+  function plotRRD(res) {
+    if (!(res in RESMAP))
+      res = "#1m";
+    clearResButtons();
+    $(res).attr("class", "active");
+    var resnumber = RESMAP[res]
+    var url = "https://spreadsheets.google.com/feeds/list/1Ut1ztO5lrrgj2-Si3nx3Cjd1dzVaXUOne45EZ4R0as8/" + resnumber + "/public/values?alt=json";
+    $.getJSON(url, function(data) {
+      t = data.feed.entry.map(function(el) {
+        return 1000*Number(el.gsx$time.$t);
+      });
+      m12 = data.feed.entry.map(function(el) {
+        return Number(el.gsx$m12.$t);
+      });
+      m20 = data.feed.entry.map(function(el) {
+        return Number(el.gsx$m20.$t);
+      });
+      m30 = data.feed.entry.map(function(el) {
+        return Number(el.gsx$m30.$t);
+      });
+      m60 = data.feed.entry.map(function(el) {
+        return Number(el.gsx$m60.$t);
+      });
+      mempoolsize = data.feed.entry.map(function(el) {
+        return Number(el.gsx$mempoolsize.$t);
+      });
+      txbyterate = data.feed.entry.map(function(el) {
+        return Number(el.gsx$txbyterate.$t);
+      });
+      capbyterate = data.feed.entry.map(function(el) {
+        return Number(el.gsx$capbyterate.$t);
+      });
+      var data = [
+        {
+          name: "12 min",
+          x: t,
+          y: m12,
+          type: "scatter"
+        },
+        {
+          name: "20 min",
+          x: t,
+          y: m20,
+          type: "scatter"
+        },
+        {
+          name: "30 min",
+          x: t,
+          y: m30,
+          type: "scatter"
+        },
+        {
+          name: "60 min",
+          x: t,
+          y: m60,
+          type: "scatter"
+        },
+        {
+          name: "Mempool size",
+          yaxis: "y2",
+          x: t,
+          y: mempoolsize,
+          xaxis: "x2",
+          line: {
+            color: "black"
+          },
+          type: "scatter"
+        },
+        {
+          name: "Tx byterate",
+          yaxis: "y2",
+          x: t,
+          y: txbyterate,
+          xaxis: "x2",
+          line: {
+            color: "black",
+            dash: "dot"
+          },
+          type: "scatter"
+        },
+        {
+          name: "Capacity byterate",
+          yaxis: "y2",
+          x: t,
+          y: capbyterate,
+          xaxis: "x2",
+          line: {
+            color: "black",
+            dash: "dash"
+          },
+          type: "scatter"
+        }
+      ];
+      var layout = {
+        title: "Required fee rate for given expected wait time",
+        yaxis2: {
+          domain: [0, 0.45],
+          rangemode: "tozero",
+          title: "Bytes or<br>Bytes per decaminute",
+          type: "linear",
+          autorange: true
+        },
+        yaxis: {
+          domain: [0.55, 1],
+          rangemode: "tozero",
+          title: "Fee rate<br>(satoshis per kB)",
+          type: "linear",
+          autorange: true
+        },
+        xaxis2: {
+          anchor: "y2",
+          title: "Time (local)",
+          type: "date",
+          autorange: true
+        },
+        xaxis: {
+          type: "date",
+          autorange: true
+        },
+      };
+      putGraph(data, layout, "graph")
+      //Plotly.Plots.resize(document.getElementById("graph") )
+
+    });
+  }
+
+  $(document).ready(function() {
+    plotRRD(window.location.hash);
+  })
+
+  $(window).on('hashchange', function() {
+    plotRRD(window.location.hash);
+  });
+
 </script>
