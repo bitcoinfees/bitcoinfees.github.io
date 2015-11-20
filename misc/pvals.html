@@ -4,10 +4,58 @@ layout: default
 permalink: /misc/pvals/
 navactive: Misc Stats
 ---
-<div id="pvals"></div>
-<p>19 Nov '15 - Hope to get this back up in a day or two.</p>
-<!-- <script type="text/javascript">
-  $(document).ready(function () {
-    putGraph(1227, "#pvals")
-  })
-</script> -->
+<div id="pvals" style="width:1024px;height:768px"></div>
+<script type="text/javascript">
+  ajaxDeferreds = []
+  for (var sheetnum=13; sheetnum<15; sheetnum++) {
+    var url = worksheetURL(sheetnum);
+    ajaxDeferreds.push($.getJSON(url));
+  }
+  $.when.apply($, ajaxDeferreds).then(function (pvals, timestr) {
+    // Make the plots
+    var data = []
+    var updatetimestr = timestr[2].responseJSON.feed.entry[0].gsx$timestr.$t;
+    var title = "Empirical CDF of wait time p-values of last 2 weeks<br>Updated on " + updatetimestr;
+    var emp_x = getCol(pvals[2].responseJSON, "x");
+    var emp_y = getCol(pvals[2].responseJSON, "y");
+
+    emp_x.unshift(0);
+    emp_y.unshift(0);
+
+    data.push({
+      name: "Empirical CDF",
+      mode: "lines",
+      y: emp_y,
+      x: emp_x,
+      type: "scatter"
+    });
+
+    data.push({
+      name: "Model CDF",
+      y: [0, 1],
+      x: [0, 1],
+      mode: "lines",
+      line: {
+        color: "black",
+        dash: "dot"
+      },
+      type: "scatter"
+    });
+
+    var layout = {
+      title: title,
+      yaxis: {
+        title: "Probability",
+        type: "linear",
+        range: [0, 1]
+      },
+      xaxis: {
+        title: "p-value",
+        type: "linear",
+        range: [0, 1]
+      },
+      hovermode: "compare",
+    }
+    putGraph(data, layout, "pvals")
+  });
+</script>

@@ -4,12 +4,78 @@ layout: default
 permalink: /misc/mining/
 navactive: Misc Stats
 ---
-<div id="poolsmbs"></div>
-<div id="poolsmfr"></div>
-<p>19 Nov '15 - Hope to get this back up in a day or two.</p>
-<!-- <script type="text/javascript">
-  $(document).ready(function () {
-    putGraph(1733, "#poolsmbs");
-    putGraph(1731, "#poolsmfr");
-  })
-</script> -->
+<div id="poolsmbs" style="width:1024px;height:768px"></div>
+<div id="poolsmfr" style="width:1024px;height:768px"></div>
+<script type="text/javascript">
+  ajaxDeferreds = []
+  for (var sheetnum=10; sheetnum<13; sheetnum++) {
+    var url = worksheetURL(sheetnum);
+    ajaxDeferreds.push($.getJSON(url));
+  }
+  $.when.apply($, ajaxDeferreds).then(function (mfr, mbs, timestr) {
+    // Make the plots
+    var updatetimestr = timestr[2].responseJSON.feed.entry[0].gsx$timestr.$t;
+
+    var mfr_title = "Min fee rate distribution at " + updatetimestr;
+    var mfr_x = getCol(mfr[2].responseJSON, "x");
+    var mfr_y = getCol(mfr[2].responseJSON, "y");
+
+    var mfr_data = [{
+      y: mfr_y,
+      x: mfr_x,
+      line: {
+        color: "black",
+        shape: "hv"
+      },
+      type: "scatter"
+    }];
+
+    var mfr_layout = {
+      title: mfr_title,
+      yaxis: {
+        title: "Probability",
+        type: "linear",
+        range: [0, 1]
+      },
+      xaxis: {
+        rangemode: "tozero",
+        title: "Fee rate (satoshis per kB)",
+        type: "linear",
+        autorange: true
+      },
+      hovermode: "closest",
+    }
+
+    var mbs_title = "Max block size distribution at " + updatetimestr;
+    var mbs_x = getCol(mbs[2].responseJSON, "x");
+    var mbs_y = getCol(mbs[2].responseJSON, "y");
+
+    var mbs_data = [{
+      y: mbs_y,
+      x: mbs_x,
+      line: {
+        color: "black",
+        shape: "hv"
+      },
+      type: "scatter"
+    }];
+
+    var mbs_layout = {
+      title: mbs_title,
+      yaxis: {
+        title: "Probability",
+        type: "linear",
+        range: [0, 1]
+      },
+      xaxis: {
+        rangemode: "tozero",
+        title: "Block size (bytes)",
+        type: "linear",
+        range: [0, 999999]
+      },
+      hovermode: "closest",
+    }
+    putGraph(mbs_data, mbs_layout, "poolsmbs")
+    putGraph(mfr_data, mfr_layout, "poolsmfr")
+  });
+</script>

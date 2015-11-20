@@ -4,10 +4,126 @@ layout: default
 permalink: /misc/profile/
 navactive: Misc Stats
 ---
-<div id="profile"></div>
-<p>19 Nov '15 - Hope to get this back up in a day or two.</p>
-<!-- <script type="text/javascript">
-  $(document).ready(function () {
-    putGraph(1183, "#profile")
-  })
-</script> -->
+<div id="profile" style="width:1024px;height:768px"></div>
+<script type="text/javascript">
+  ajaxDeferreds = []
+  for (var sheetnum=5; sheetnum<10; sheetnum++) {
+    var url = worksheetURL(sheetnum);
+    ajaxDeferreds.push($.getJSON(url));
+  }
+  $.when.apply($, ajaxDeferreds).then(function (waits, mempool, tx, cap, timestr) {
+    // Make the plot
+    function filter_x (x, y, x_max) {
+      var maxidx = x.length;
+      for (var i=0; i < x.length; i++) {
+        if (x[i] >= x_max) {
+          maxidx = i;
+          break
+        }
+      }
+      x.splice(maxidx);
+      y.splice(maxidx);
+    }
+    var data = [];
+
+    var waits_x = getCol(waits[2].responseJSON, "x");
+    var waits_y = getCol(waits[2].responseJSON, "y");
+    var maxfeerate = Math.max.apply(Math, waits_x);
+    data.push({
+      name: "Expected wait time",
+      yaxis: "y2",
+      y: waits_y,
+      x: waits_x,
+      mode: "lines",
+      line: {
+        color: "red"
+      },
+      type: "scatter"
+    });
+
+    var mempool_x = getCol(mempool[2].responseJSON, "x");
+    var mempool_y = getCol(mempool[2].responseJSON, "y");
+    filter_x(mempool_x, mempool_y, maxfeerate);
+    data.push({
+      name: "Cumul. mempool size",
+      y: mempool_y,
+      x: mempool_x,
+      mode: "lines",
+      line: {
+        color: "black"
+      },
+      type: "scatter"
+    });
+
+    var tx_x = getCol(tx[2].responseJSON, "x");
+    var tx_y = getCol(tx[2].responseJSON, "y");
+    filter_x(tx_x, tx_y, maxfeerate);
+    data.push({
+      name: "Cumul. tx byterate",
+      y: tx_y,
+      x: tx_x,
+      mode: "lines",
+      line: {
+        color: "black",
+        dash: "dot"
+      },
+      type: "scatter"
+    });
+
+    var cap_x = getCol(cap[2].responseJSON, "x");
+    var cap_y = getCol(cap[2].responseJSON, "y");
+    filter_x(cap_x, cap_y, maxfeerate);
+    cap_x.push(maxfeerate);
+    cap_y.push(cap_y[cap_y.length - 1])
+    data.push({
+      name: "Cumul. capacity byterate",
+      y: cap_y,
+      x: cap_x,
+      mode: "lines",
+      line: {
+        color: "black",
+        dash: "dash",
+        shape: "hv"
+      },
+      type: "scatter"
+    });
+
+    var title = "Wait profile at " + timestr[2].responseJSON.feed.entry[0].gsx$timestr.$t;
+
+    var layout = {
+      title: title,
+      yaxis: {
+        rangemode: "tozero",
+        title: "Bytes or<br>Bytes per decaminute",
+        type: "linear",
+        autorange: true
+      },
+      yaxis2: {
+        tickfont: {
+          color: "red"
+        },
+        title: "Expected wait (s)",
+        rangemode: "tozero",
+        overlaying: "y",
+        titlefont: {
+          color: "red"
+        },
+        side: "right",
+        type: "linear",
+        autorange: true
+      },
+      xaxis: {
+        rangemode: "tozero",
+        title: "Fee rate (satoshis per kB)",
+        type: "linear",
+        autorange: true
+      },
+      hovermode: "closest",
+      legend: {
+        y: 1,
+        x: 1.1
+      }
+    };
+    putGraph(data, layout, "profile")
+  });
+</script>

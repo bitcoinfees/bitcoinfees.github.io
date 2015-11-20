@@ -33,32 +33,16 @@ navactive: Home
     clearResButtons();
     $(res).attr("class", "active");
     var resnumber = RESMAP[res]
-    var url = "https://spreadsheets.google.com/feeds/list/1Ut1ztO5lrrgj2-Si3nx3Cjd1dzVaXUOne45EZ4R0as8/" + resnumber + "/public/values?alt=json";
+    var url = worksheetURL(resnumber)
     $.getJSON(url, function(data) {
-      t = data.feed.entry.map(function(el) {
-        return 1000*Number(el.gsx$time.$t);
-      });
-      m12 = data.feed.entry.map(function(el) {
-        return Number(el.gsx$m12.$t);
-      });
-      m20 = data.feed.entry.map(function(el) {
-        return Number(el.gsx$m20.$t);
-      });
-      m30 = data.feed.entry.map(function(el) {
-        return Number(el.gsx$m30.$t);
-      });
-      m60 = data.feed.entry.map(function(el) {
-        return Number(el.gsx$m60.$t);
-      });
-      mempoolsize = data.feed.entry.map(function(el) {
-        return Number(el.gsx$mempoolsize.$t);
-      });
-      txbyterate = data.feed.entry.map(function(el) {
-        return Number(el.gsx$txbyterate.$t);
-      });
-      capbyterate = data.feed.entry.map(function(el) {
-        return Number(el.gsx$capbyterate.$t);
-      });
+      t = getCol(data, "time").map(function(el) {return el*1000;});
+      m12 = getCol(data, "m12");
+      m20 = getCol(data, "m20");
+      m30 = getCol(data, "m30");
+      m60 = getCol(data, "m60");
+      mempoolsize = getCol(data, "mempoolsize");
+      txbyterate = getCol(data, "txbyterate");
+      capbyterate = getCol(data, "capbyterate");
       var data = [
         {
           name: "12 min",
