@@ -3,3 +3,12 @@ footer li {
     list-style: none;
     padding-right: 20px;
 }
+
+#graph {
+    width: 80vw;
+    height: 60vw;
+    min-width: 640px;
+    min-height: 480px;
+    max-width: 1080px;
+    max-height: 810px;
+}
