@@ -15,6 +15,7 @@ navactive: Home
 </nav>
 
 <script type="text/javascript">
+  var targetspin = document.getElementById("graph")
   var RESMAP = {
     "#1m": 1,
     "#30m": 2,
@@ -28,6 +29,9 @@ navactive: Home
   }
 
   function plotRRD(res) {
+    // start the loading spin
+    $("#graph").html("")
+    var spinner = new Spinner().spin(targetspin)
     if (!(res in RESMAP))
       res = "#1m";
     clearResButtons();
@@ -35,6 +39,7 @@ navactive: Home
     var resnumber = RESMAP[res]
     var url = worksheetURL(resnumber)
     $.getJSON(url, function(data) {
+      spinner.stop()
       t = getCol(data, "time").map(function(el) {return el*1000;});
       m12 = getCol(data, "m12");
       m20 = getCol(data, "m20");

@@ -12,3 +12,7 @@ footer li {
     max-width: 1080px;
     max-height: 810px;
 }
+
+#content {
+    position: relative;
+}
