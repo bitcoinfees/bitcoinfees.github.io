@@ -4,7 +4,8 @@ layout: default
 permalink: /misc/profile/
 navactive: Misc Stats
 ---
-<div id="profile" style="width:1024px;height:768px"></div>
+<div id="profile" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
+</div>
 <script type="text/javascript">
   ajaxDeferreds = []
   for (var sheetnum=5; sheetnum<10; sheetnum++) {
@@ -125,5 +126,9 @@ navactive: Misc Stats
       }
     };
     putGraph(data, layout, "profile")
+  });
+
+  $(window).on('resize', function() {
+    Plotly.Plots.resize(document.getElementById("profile"));
   });
 </script>

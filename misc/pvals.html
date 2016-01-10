@@ -4,7 +4,7 @@ layout: default
 permalink: /misc/pvals/
 navactive: Misc Stats
 ---
-<div id="pvals" style="width:1024px;height:768px"></div>
+<div id="pvals" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;"></div>
 <script type="text/javascript">
   ajaxDeferreds = []
   for (var sheetnum=13; sheetnum<15; sheetnum++) {
@@ -57,5 +57,9 @@ navactive: Misc Stats
       hovermode: "compare",
     }
     putGraph(data, layout, "pvals")
+  });
+
+  $(window).on('resize', function() {
+    Plotly.Plots.resize(document.getElementById("pvals"));
   });
 </script>

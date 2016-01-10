@@ -4,8 +4,10 @@ layout: default
 permalink: /misc/mining/
 navactive: Misc Stats
 ---
-<div id="poolsmbs" style="width:1024px;height:768px"></div>
-<div id="poolsmfr" style="width:1024px;height:768px"></div>
+<div id="poolsmbs" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
+</div>
+<div id="poolsmfr" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
+</div>
 <script type="text/javascript">
   ajaxDeferreds = []
   for (var sheetnum=10; sheetnum<13; sheetnum++) {
@@ -77,5 +79,10 @@ navactive: Misc Stats
     }
     putGraph(mbs_data, mbs_layout, "poolsmbs")
     putGraph(mfr_data, mfr_layout, "poolsmfr")
+  });
+
+  $(window).on('resize', function() {
+    Plotly.Plots.resize(document.getElementById("poolsmbs"));
+    Plotly.Plots.resize(document.getElementById("poolsmfr"));
   });
 </script>

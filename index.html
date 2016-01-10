@@ -4,7 +4,9 @@ layout: default
 navactive: Home
 ---
 <!-- <div id="graph" class="embed-responsive embed-responsive-4by3"></div> -->
-<div id="graph"></div>
+<div id="graph"
+     style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
+</div>
 <nav>
   <ul id="res-select" class="pagination">
     <li id="1m"><a href="/#1m">1m</a></li>
@@ -151,6 +153,6 @@ navactive: Home
   });
 
   $(window).on('resize', function() {
-    Plotly.Plots.resize(document.getElementById("graph") )
+    Plotly.Plots.resize(document.getElementById("graph"));
   });
 </script>
