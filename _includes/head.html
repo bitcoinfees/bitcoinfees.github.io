@@ -3,7 +3,7 @@
   <script type="text/javascript">
     var host = "{{ site.enforce_ssl }}"
     if ((host == window.location.host) && (window.location.protocol != "https:"))
-      window.location.protocol = "https";
+      window.location.href = "https:" + window.location.href.substring(window.location.protocol.length);
   </script>
   {% endif %}
   <meta charset="utf-8">
