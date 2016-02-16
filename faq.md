@@ -20,6 +20,11 @@ would not be able to attain an average wait time of 10 minutes.
 A 10 min fee graph would, therefore, occasionally have an undefined value. To avoid this, we use
 12 minutes instead.
 
+### Is there a way to resize the graph axes?
+
+Yes! Click and drag a box over the graph to set the viewing range. Double clicking on the graph
+then resets the axes.
+
 ### Why does the fee graph seem to have a floor of 5000 satoshis/kB?
 
 The floor is determined by the minrelaytxfee setting of my Bitcoin node. It's possible you
