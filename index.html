@@ -43,54 +43,93 @@ navactive: Home
     $.getJSON(url, function(data) {
       spinner.stop()
       t = getCol(data, "time").map(function(el) {return el*1000;});
-      m12 = getCol(data, "m12");
-      m20 = getCol(data, "m20");
-      m30 = getCol(data, "m30");
-      m60 = getCol(data, "m60");
-      mempoolsize = getCol(data, "mempoolsize");
+      mempoolsize = getCol(data, "mempool");
       txbyterate = getCol(data, "txbyterate");
       capbyterate = getCol(data, "capbyterate");
       var data = [
         {
-          name: "12 min",
+          name: "1",
           x: t,
-          y: m12,
+          y: getCol(data, "fee1"),
+          showlegend:false,
           type: "scatter"
         },
         {
-          name: "20 min",
+          name: "2",
           x: t,
-          y: m20,
+          y: getCol(data, "fee2"),
+          showlegend:false,
           type: "scatter"
         },
         {
-          name: "30 min",
+          name: "3",
           x: t,
-          y: m30,
+          y: getCol(data, "fee3"),
+          showlegend:false,
           type: "scatter"
         },
         {
-          name: "60 min",
+          name: "6",
           x: t,
-          y: m60,
+          y: getCol(data, "fee6"),
+          showlegend:false,
           type: "scatter"
         },
         {
-          name: "Mempool size",
+          name: "1",
           yaxis: "y2",
           x: t,
-          y: mempoolsize,
+          y: getCol(data, "mempool1"),
           xaxis: "x2",
-          line: {
-            color: "black"
-          },
-          type: "scatter"
+          fillcolor: "rgba(31, 119, 180, 0.5)",
+          fill: 'tozeroy',
+          mode: 'none'
+        },
+        {
+          name: "2",
+          yaxis: "y2",
+          x: t,
+          y: getCol(data, "mempool2"),
+          xaxis: "x2",
+          fillcolor: "rgba(255, 127, 14, 0.5)",
+          fill: 'tonexty',
+          mode: 'none'
+        },
+        {
+          name: "3",
+          yaxis: "y2",
+          x: t,
+          y: getCol(data, "mempool3"),
+          xaxis: "x2",
+          fillcolor: "rgba(44, 160, 44, 0.5)",
+          fill: 'tonexty',
+          mode: 'none'
+        },
+        {
+          name: "6",
+          yaxis: "y2",
+          x: t,
+          y: getCol(data, "mempool6"),
+          xaxis: "x2",
+          fillcolor: "rgba(214, 39, 40, 0.5)",
+          fill: 'tonexty',
+          mode: 'none'
+        },
+        {
+          name: "More than 6",
+          yaxis: "y2",
+          x: t,
+          y: getCol(data, "mempool"),
+          xaxis: "x2",
+          fillcolor: "rgba(128, 128, 128, 0.5)",
+          fill: 'tonexty',
+          mode: 'none'
         },
         {
           name: "Tx byterate",
           yaxis: "y2",
           x: t,
-          y: txbyterate,
+          y: getCol(data, "txbyterate"),
           xaxis: "x2",
           line: {
             color: "black",
@@ -102,7 +141,7 @@ navactive: Home
           name: "Capacity byterate",
           yaxis: "y2",
           x: t,
-          y: capbyterate,
+          y: getCol(data, "capbyterate"),
           xaxis: "x2",
           line: {
             color: "black",
@@ -112,11 +151,11 @@ navactive: Home
         }
       ];
       var layout = {
-        title: "Required fee rate for given expected wait time",
+        title: "Fee rate to confirm in X blocks (with 90% chance)",
         yaxis2: {
           domain: [0, 0.45],
           rangemode: "tozero",
-          title: "Bytes or<br>Bytes per decaminute",
+          title: "Mempool size (bytes) or<br>Byterate (bytes/10min)",
           type: "linear",
           autorange: true
         },
@@ -137,6 +176,9 @@ navactive: Home
           type: "date",
           autorange: true
         },
+        legend: {
+          traceorder: "normal"
+        }
       };
       putGraph(data, layout, "graph")
       //Plotly.Plots.resize(document.getElementById("graph") )
