@@ -29,22 +29,40 @@ navactive: Misc Stats
 
     var waits_x = getCol(waits[2].responseJSON, "x");
     var waits_y = getCol(waits[2].responseJSON, "y");
-    var maxfeerate = Math.max.apply(Math, waits_x);
+    var wait_max = Math.max.apply(Math, waits_x);
+
+    var mempool_x = getCol(mempool[2].responseJSON, "x");
+    var mempool_y = getCol(mempool[2].responseJSON, "y");
+    var mempool_max = Math.max.apply(Math, mempool_x);
+
+    var tx_x = getCol(tx[2].responseJSON, "x");
+    var tx_y = getCol(tx[2].responseJSON, "y");
+    var tx_max = Math.max.apply(Math, tx_x);
+
+    var cap_x = getCol(cap[2].responseJSON, "x");
+    var cap_y = getCol(cap[2].responseJSON, "y");
+    var cap_max = Math.max.apply(Math, cap_x);
+
+    var max = Math.max(wait_max, mempool_max, tx_max, cap_max);
+    waits_x.push(max);
+    waits_y.push(waits_y[waits_y.length - 1]);
+    cap_x.unshift(0);
+    cap_y.unshift(0);
+    cap_x.push(max);
+    cap_y.push(cap_y[cap_y.length - 1])
+
     data.push({
-      name: "Expected wait time",
+      name: "Num blocks to confirm",
       yaxis: "y2",
       y: waits_y,
       x: waits_x,
       mode: "lines",
       line: {
+        shape: "hv",
         color: "red"
       },
       type: "scatter"
     });
-
-    var mempool_x = getCol(mempool[2].responseJSON, "x");
-    var mempool_y = getCol(mempool[2].responseJSON, "y");
-    filter_x(mempool_x, mempool_y, maxfeerate);
     data.push({
       name: "Cumul. mempool size",
       y: mempool_y,
@@ -55,10 +73,6 @@ navactive: Misc Stats
       },
       type: "scatter"
     });
-
-    var tx_x = getCol(tx[2].responseJSON, "x");
-    var tx_y = getCol(tx[2].responseJSON, "y");
-    filter_x(tx_x, tx_y, maxfeerate);
     data.push({
       name: "Cumul. tx byterate",
       y: tx_y,
@@ -70,12 +84,6 @@ navactive: Misc Stats
       },
       type: "scatter"
     });
-
-    var cap_x = getCol(cap[2].responseJSON, "x");
-    var cap_y = getCol(cap[2].responseJSON, "y");
-    filter_x(cap_x, cap_y, maxfeerate);
-    cap_x.push(maxfeerate);
-    cap_y.push(cap_y[cap_y.length - 1])
     data.push({
       name: "Cumul. capacity byterate",
       y: cap_y,
@@ -103,7 +111,7 @@ navactive: Misc Stats
         tickfont: {
           color: "red"
         },
-        title: "Expected wait (s)",
+        title: "Number of blocks",
         rangemode: "tozero",
         overlaying: "y",
         titlefont: {
