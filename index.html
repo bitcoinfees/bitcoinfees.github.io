@@ -44,8 +44,6 @@ navactive: Home
       spinner.stop()
       t = getCol(data, "time").map(function(el) {return el*1000;});
       mempoolsize = getCol(data, "mempool");
-      txbyterate = getCol(data, "txbyterate");
-      capbyterate = getCol(data, "capbyterate");
       var data = [
         {
           name: "1",
@@ -119,11 +117,22 @@ navactive: Home
           name: "More than 6",
           yaxis: "y2",
           x: t,
-          y: getCol(data, "mempool"),
+          y: mempoolsize,
           xaxis: "x2",
           fillcolor: "rgba(128, 128, 128, 0.5)",
           fill: 'tonexty',
           mode: 'none'
+        },
+        {
+          name: "Mempool size",
+          yaxis: "y2",
+          x: t,
+          y: mempoolsize,
+          xaxis: "x2",
+          type: "scatter",
+          line: {
+            color: "rgba(0, 0, 0, 0.7)",
+          }
         },
         {
           name: "Tx byterate",
@@ -132,7 +141,7 @@ navactive: Home
           y: getCol(data, "txbyterate"),
           xaxis: "x2",
           line: {
-            color: "black",
+            color: "rgba(0, 0, 0, 0.7)",
             dash: "dot"
           },
           type: "scatter"
@@ -144,7 +153,7 @@ navactive: Home
           y: getCol(data, "capbyterate"),
           xaxis: "x2",
           line: {
-            color: "black",
+            color: "rgba(0, 0, 0, 0.7)",
             dash: "dash"
           },
           type: "scatter"
