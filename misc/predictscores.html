@@ -1,0 +1,75 @@
+---
+title: Predict scores
+layout: default
+permalink: /misc/predictscores/
+navactive: Misc Stats
+---
+<div id="predictscores" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;"></div>
+<script type="text/javascript">
+  ajaxDeferreds = []
+  for (var sheetnum=13; sheetnum<15; sheetnum++) {
+    var url = worksheetURL(sheetnum);
+    ajaxDeferreds.push($.getJSON(url));
+  }
+  $.when.apply($, ajaxDeferreds).then(function (scorestable, timestr) {
+    // Make the plots
+    var data = []
+    var updatetimestr = timestr[2].responseJSON.feed.entry[0].gsx$timestr.$t;
+    var title = "Proportion of transactions that attained / exceeded their predicted<br>confirmation time over past 2 weeks (updated " + updatetimestr +")";
+    var conf = getCol(scorestable[2].responseJSON, "conf");
+    var scores = getCol(scorestable[2].responseJSON, "scores");
+    var invscores = scores.map(function(el, idx, a) {
+      return 1 - el;
+    });
+    var numtxs = getCol(scorestable[2].responseJSON, "txtotal").map(function(el, idx, a){
+      return Math.round(scores[idx]*el).toString() + " txs";
+    });
+
+    data.push({
+      name: "Attained",
+      y: conf,
+      x: scores,
+      orientation: "h",
+      showlegend: true,
+      marker: {
+        color: "rgb(31, 119, 180)"
+      },
+      type: "bar",
+      text: numtxs
+    });
+    data.push({
+      name: "Exceeded",
+      y: conf,
+      x: invscores,
+      orientation: "h",
+      showlegend: true,
+      marker: {
+        color: "rgb(255, 127, 14)"
+      },
+      type: "bar"
+    });
+
+    var layout = {
+      title: title,
+      barmode: "stack",
+      yaxis: {
+        range: [6.5, 0.5],
+        title: "Predicted number of blocks to confirmation",
+        type: "linear"
+      },
+      xaxis: {
+        range: [0, 1],
+        title: "Proportion",
+        type: "linear"
+      },
+      legend: {
+        traceorder: "normal"
+      }
+    }
+    putGraph(data, layout, "predictscores")
+  });
+
+  $(window).on('resize', function() {
+    Plotly.Plots.resize(document.getElementById("predictscores"));
+  });
+</script>
