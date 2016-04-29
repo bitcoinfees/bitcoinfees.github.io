@@ -41,15 +41,23 @@ navactive: Misc Stats
 
     var cap_x = getCol(cap[2].responseJSON, "x");
     var cap_y = getCol(cap[2].responseJSON, "y");
-    var cap_max = Math.max.apply(Math, cap_x);
 
-    var max = Math.max(wait_max, mempool_max, tx_max, cap_max);
+    var max = Math.max(wait_max, mempool_max, tx_max);
     waits_x.push(max);
     waits_y.push(waits_y[waits_y.length - 1]);
     cap_x.unshift(0);
     cap_y.unshift(0);
+
+    // Truncate cap_x at the max
+    var capidx = cap_x.findIndex(function (feerate) {
+      return feerate >= max;
+    })
+    if (capidx != -1) {
+      cap_x = cap_x.slice(0, capidx);
+      cap_y = cap_y.slice(0, capidx);
+    }
     cap_x.push(max);
-    cap_y.push(cap_y[cap_y.length - 1])
+    cap_y.push(cap_y[cap_y.length - 1]);
 
     data.push({
       name: "Num blocks to confirm",
