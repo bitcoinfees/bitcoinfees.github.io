@@ -21,9 +21,13 @@ navactive: Misc Stats
     var invscores = scores.map(function(el, idx, a) {
       return 1 - el;
     });
-    var numtxs = getCol(scorestable[2].responseJSON, "txtotal").map(function(el, idx, a){
-      return Math.round(scores[idx]*el).toString() + " txs";
-    });
+    //var totaltxs = getCol(scorestable[2].responseJSON, "txtotal")
+    //var txsAttained = totaltxs.map(function(el, idx, a){
+    //  return Math.round(scores[idx]*el).toString() + " txs";
+    //});
+    //var txsExceeded = totaltxs.map(function(el, idx, a){
+    //  return Math.round(invscores[idx]*el).toString() + " txs";
+    //});
 
     data.push({
       name: "Attained",
@@ -35,7 +39,6 @@ navactive: Misc Stats
         color: "rgb(31, 119, 180)"
       },
       type: "bar",
-      text: numtxs
     });
     data.push({
       name: "Exceeded",
@@ -46,7 +49,7 @@ navactive: Misc Stats
       marker: {
         color: "rgb(255, 127, 14)"
       },
-      type: "bar"
+      type: "bar",
     });
 
     var layout = {
@@ -54,7 +57,7 @@ navactive: Misc Stats
       barmode: "stack",
       yaxis: {
         range: [6.5, 0.5],
-        title: "Predicted number of blocks to confirmation",
+        title: "Predicted number of blocks to confirm",
         type: "linear"
       },
       xaxis: {
