@@ -15,7 +15,7 @@ navactive: Misc Stats
     // Make the plots
     var data = []
     var updatetimestr = timestr[2].responseJSON.feed.entry[0].gsx$timestr.$t;
-    var title = "Proportion of transactions that attained / exceeded their predicted<br>confirmation time over past 2 weeks (updated " + updatetimestr +")";
+    var title = "Proportion of transactions that attained their predicted<br>confirmation time over past 2 weeks (updated " + updatetimestr +")";
     var conf = getCol(scorestable[2].responseJSON, "conf");
     var scores = getCol(scorestable[2].responseJSON, "scores");
     var invscores = scores.map(function(el, idx, a) {
