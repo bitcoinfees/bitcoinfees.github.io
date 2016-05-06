@@ -1,0 +1,133 @@
+---
+title: Historical Estimates
+layout: default
+permalink: /misc/historical/
+navactive: Misc Stats
+---
+
+<div id="graph"
+     style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
+</div>
+
+<script type="text/javascript">
+  var targetspin = document.getElementById("graph")
+
+  function plotRRD() {
+    // start the loading spin
+    $("#graph").html("")
+    var spinner = new Spinner().spin(targetspin)
+    var resnumber = 15
+    var url = worksheetURL(resnumber)
+    $.getJSON(url, function(data) {
+      spinner.stop()
+      t = getCol(data, "time").map(function(el) {return el*1000;});
+      m12 = getCol(data, "m12");
+      m20 = getCol(data, "m20");
+      m30 = getCol(data, "m30");
+      m60 = getCol(data, "m60");
+      mempoolsize = getCol(data, "mempoolsize");
+      txbyterate = getCol(data, "txbyterate");
+      capbyterate = getCol(data, "capbyterate");
+      var data = [
+        {
+          name: "12 min",
+          x: t,
+          y: m12,
+          type: "scatter"
+        },
+        {
+          name: "20 min",
+          x: t,
+          y: m20,
+          type: "scatter"
+        },
+        {
+          name: "30 min",
+          x: t,
+          y: m30,
+          type: "scatter"
+        },
+        {
+          name: "60 min",
+          x: t,
+          y: m60,
+          type: "scatter"
+        },
+        {
+          name: "Mempool size",
+          yaxis: "y2",
+          x: t,
+          y: mempoolsize,
+          xaxis: "x2",
+          line: {
+            color: "black"
+          },
+          type: "scatter"
+        },
+        {
+          name: "Tx byterate",
+          yaxis: "y2",
+          x: t,
+          y: txbyterate,
+          xaxis: "x2",
+          line: {
+            color: "black",
+            dash: "dot"
+          },
+          type: "scatter"
+        },
+        {
+          name: "Capacity byterate",
+          yaxis: "y2",
+          x: t,
+          y: capbyterate,
+          xaxis: "x2",
+          line: {
+            color: "black",
+            dash: "dash"
+          },
+          type: "scatter"
+        }
+      ];
+      var layout = {
+        title: "Required fee rate for given expected wait time",
+        yaxis2: {
+          domain: [0, 0.45],
+          rangemode: "tozero",
+          title: "Bytes or<br>Bytes per decaminute",
+          type: "linear",
+          autorange: true
+        },
+        yaxis: {
+          domain: [0.55, 1],
+          rangemode: "tozero",
+          title: "Fee rate<br>(satoshis per kB)",
+          type: "linear",
+          autorange: true
+        },
+        xaxis2: {
+          anchor: "y2",
+          title: "Time (local)",
+          type: "date",
+          autorange: true
+        },
+        xaxis: {
+          type: "date",
+          autorange: true
+        },
+      };
+      putGraph(data, layout, "graph")
+      //Plotly.Plots.resize(document.getElementById("graph") )
+
+    });
+  }
+
+  $(document).ready(function() {
+    plotRRD();
+  })
+
+  $(window).on('resize', function() {
+    Plotly.Plots.resize(document.getElementById("graph"));
+  });
+
+</script>
