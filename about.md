@@ -43,7 +43,7 @@ for a long time.
 The algorithm used is model-based:
 
 * Block discovery and transaction arrivals are modeled as Poisson processes
-* Miners' are assumed to select transactions greedily by fee rate, subject to a
+* Miners are assumed to select transactions greedily by fee rate, subject to a
   maximum block size and minimum fee rate
 * The max block size and min fee rate parameters of each block are independent
   random variables
