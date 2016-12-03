@@ -7,10 +7,16 @@ navactive: FAQ
 
 ### Frequently Asked Questions
 
-#### Why does the fee graph seem to have a floor of 5000 satoshis/kB?
+#### Do you have an API for the data?
 
-The floor is determined by the minrelaytxfee setting of my Bitcoin node. It's possible you
-could get confirmations at a lower fee rate, but my node wouldn't be able to tell.
+Unfortunately, no. This is just a hobby and I can't commit to maintaining a reliable API.
+
+#### The mempool size doesn't seem to correspond with other sites.
+
+The mempool size graph discounts transactions with fee rate lower than minrelaytxfee. The graph
+thus reflects the queue of fee-paying transactions, which is what we're interested in.
+
+To see the mempool size vs fee rate, refer to [this graph](/misc/profile).
 
 #### What are the color bands in the [mempool graph](/#1m)?
 The color bands divide up the mempool size according to the fee rates shown in the upper graph.
@@ -20,12 +26,10 @@ upper blue graph, at any point in time.
 This can be used, for example, to gauge a transaction's position in the mempool backlog, or to
 assess whether the fee estimates are reasonable.
 
-#### The mempool size doesn't seem to correspond with other sites.
+#### Why does the fee graph seem to have a floor of 5000 satoshis/kB?
 
-The mempool size graph discounts transactions with fee rate lower than minrelaytxfee. The graph
-thus reflects the queue of fee-paying transactions, which is what we're interested in.
-
-To see the mempool size vs fee rate, refer to [this graph](/misc/profile).
+The floor is determined by the minrelaytxfee setting of my Bitcoin node. It's possible you
+could get confirmations at a lower fee rate, but my node wouldn't be able to tell.
 
 #### What is "capacity byterate"?
 
