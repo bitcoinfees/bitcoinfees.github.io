@@ -13,8 +13,7 @@ Unfortunately, no. This is just a hobby and I can't commit to maintaining a reli
 
 #### The mempool size doesn't seem to correspond with other sites.
 
-The mempool size graph discounts transactions with fee rate lower than minrelaytxfee. The graph
-thus reflects the queue of fee-paying transactions, which is what we're interested in.
+This is probably due to different minrelaytxfee and/or maxmempool settings.
 
 To see the mempool size vs fee rate, refer to [this graph](/misc/profile).
 
