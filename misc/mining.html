@@ -6,8 +6,8 @@ navactive: Misc Stats
 ---
 <div id="poolsmbs" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
 </div>
-<div id="poolsmfr" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
-</div>
+<!-- <div id="poolsmfr" style="width:80vw;height:60vw;min-width:640px;min-height:480px;max-width:1080px;max-height:810px;">
+</div> -->
 <script type="text/javascript">
   ajaxDeferreds = []
   for (var sheetnum=10; sheetnum<13; sheetnum++) {
@@ -78,11 +78,11 @@ navactive: Misc Stats
       hovermode: "closest",
     }
     putGraph(mbs_data, mbs_layout, "poolsmbs")
-    putGraph(mfr_data, mfr_layout, "poolsmfr")
+    //putGraph(mfr_data, mfr_layout, "poolsmfr")
   });
 
   $(window).on('resize', function() {
     Plotly.Plots.resize(document.getElementById("poolsmbs"));
-    Plotly.Plots.resize(document.getElementById("poolsmfr"));
+    //Plotly.Plots.resize(document.getElementById("poolsmfr"));
   });
 </script>

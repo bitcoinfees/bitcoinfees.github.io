@@ -7,6 +7,10 @@ navactive: FAQ
 
 ### Frequently Asked Questions
 
+#### Does this take Segwit into account?
+
+Yes. All sizes / rates refer to "virtual sizes", i.e. roughly weight divided by 4.
+
 #### Do you have an API for the data?
 
 Unfortunately, no. This is just a hobby and I can't commit to maintaining a reliable API.
